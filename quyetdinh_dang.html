@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quyết Định Thành Lập Trong Đảng</title>
+    <!-- Thêm các thư viện cần thiết -->
+    <script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.37.11/docxtemplater.js"></script>
+    <script src="https://unpkg.com/pizzip@3.1.4/dist/pizzip.js"></script>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm 1.5cm 1.5cm 2.5cm;
+        }
+
+        body {
+            font-family: 'Times New Roman', serif;
+            font-size: 13pt;
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+        }
+
+        .page {
+            width: 21cm;
+            min-height: 29.7cm;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .header-left {
+            text-align: center;
+            width: 45%;
+            font-size: 13pt;
+        }
+
+        .header-right {
+            text-align: center;
+            width: 55%;
+            font-weight: bold;
+            font-size: 13pt;
+        }
+
+        .underline {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .document-number {
+            margin-top: 20px;
+            font-size: 13pt;
+        }
+
+        .date-location {
+            font-style: italic;
+            margin-top: 20px;
+            font-size: 13pt;
+        }
+
+        .title {
+            text-align: center;
+            font-weight: bold;
+            margin: 30px 0;
+            font-size: 16pt;
+        }
+
+        .title-main {
+            font-size: 16pt;
+            margin-bottom: 15px;
+        }
+
+        .title-content {
+            font-size: 14pt;
+            line-height: 1.4;
+        }
+
+        .basis-text {
+            font-style: italic;
+            text-align: justify;
+            margin: 10px 0;
+            text-indent: 30px;
+            line-height: 1.5;
+        }
+
+        .decision-section {
+            text-align: center;
+            font-weight: bold;
+            margin: 25px 0;
+            font-size: 14pt;
+        }
+
+        .article {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .article-number {
+            font-weight: bold;
+            text-indent: 30px;
+            display: inline;
+        }
+
+        .article-content {
+            display: inline;
+        }
+
+        .chi-uy-list {
+            margin-left: 60px;
+            margin: 15px 0 15px 60px;
+        }
+
+        .chi-uy-item {
+            margin: 5px 0;
+            text-align: justify;
+        }
+
+        .closing-paragraph {
+            margin: 15px 0;
+            text-align: justify;
+            text-indent: 30px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .footer-left {
+            width: 60%;
+        }
+
+        .footer-right {
+            width: 40%;
+            text-align: center;
+        }
+
+        .signature-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .signature-name {
+            font-weight: bold;
+            margin-top: 80px;
+        }
+
+        .recipient-item {
+            margin: 3px 0;
+        }
+
+        /* Page 2 styles */
+        .table-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16pt;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .table-subtitle {
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 13pt;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px 5px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 13pt;
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .print-button {
+            position: fixed;
+            top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .print-button:hover {
+            background-color: #45a049;
+        }
+
+        #loading-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 2000;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        @media print {
+            .print-button {
+                display: none;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .page {
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Print Button -->
+    <button class="print-button" onclick="window.print()" style="right: 150px;">In Tài Liệu</button>
+    <button class="print-button" onclick="exportToWordTemplate()" style="right: 20px;">Xuất Word</button>
+
+    <!-- Loading Message -->
+    <div id="loading-message">Đang tải dữ liệu...</div>
+
+    <!-- First page -->
+    <div class="page">
+        <div class="header">
+            <div class="header-left">
+                <div>ĐẢNG BỘ UBND TỈNH BẮC NINH</div>
+                <div class="underline"><strong>ĐẢNG ỦY SỞ XÂY DỰNG</strong></div>
+                <div class="document-number">Số: <span id="so-quyet-dinh">______</span>/QĐ/ĐU</div>
+            </div>
+            <div class="header-right">
+                <div>ĐẢNG CỘNG SẢN VIỆT NAM</div>
+                <div class="date-location">
+                    <em>Bắc Giang, ngày &nbsp;&nbsp;&nbsp; tháng 7 năm 2025</em>
+                </div>
+            </div>
+        </div>
+
+        <div class="title">
+            <div class="title-main">QUYẾT ĐỊNH</div>
+            <div class="title-content" id="trich-yeu">
+                <!-- Trích yếu sẽ được điền từ dữ liệu -->
+            </div>
+        </div>
+
+        <div class="basis-text">
+            Căn cứ Điều lệ Đảng Cộng sản Việt Nam; Quy định số 294-QĐ-QĐ/TW ngày 26/5/2025 của Ban Chấp hành Trung ương về thi hành Điều lệ Đảng;
+        </div>
+
+        <div class="basis-text">
+            Căn cứ Quyết định số - QĐ/ĐU ngày 01/7/2025 của Đảng ủy Ủy ban nhân dân tỉnh về thành lập Đảng bộ Sở Xây dựng tỉnh Bắc Ninh;
+        </div>
+
+        <div class="basis-text">
+            Căn cứ Quy chế làm việc số - QC/ĐU ngày 01/7/2025 của Ban Chấp hành Đảng bộ Sở Xây dựng tỉnh Bắc Ninh nhiệm kỳ 2025-2030;
+        </div>
+
+        <div class="basis-text" id="can-cu-khac">
+            <!-- Căn cứ khác sẽ được điền từ dữ liệu -->
+        </div>
+
+        <div class="basis-text">
+            Xét đề nghị của Văn phòng Đảng ủy,
+        </div>
+
+        <div class="decision-section">
+            BAN CHẤP HÀNH ĐẢNG BỘ SỞ XÂY DỰNG<br>
+            QUYẾT ĐỊNH
+        </div>
+
+        <div class="article">
+            <span class="article-number">Điều 1.</span>
+            <span class="article-content">Thành lập <strong><span id="ten-chi-bo">Chi bộ Văn phòng</span></strong> trực thuộc Đảng ủy Sở Xây dựng trên cơ sở số đảng viên công tác tại Văn phòng Sở <em>(có danh sách đảng viên kèm theo).</em></span>
+        </div>
+
+        <div class="article">
+            <span class="article-number">Điều 2.</span>
+            <span class="article-content">Chỉ định Chi ủy, chức danh Bí thư, Phó Bí thư <span id="ten-chi-bo-2">Chi bộ Văn phòng</span>, nhiệm kỳ <span id="nhiem-ky">2025-2030</span> gồm các đồng chí có tên sau:</span>
+        </div>
+
+        <div class="chi-uy-list" id="danh-sach-chi-uy">
+            <!-- Danh sách chi ủy sẽ được điền từ dữ liệu -->
+        </div>
+
+        <div class="article">
+            <span class="article-number">Điều 3.</span>
+            <span class="article-content">Chi ủy <span id="ten-chi-bo-3">Chi bộ Văn phòng</span> có trách nhiệm lãnh đạo, chỉ đạo, tổ chức hoạt động của chi bộ theo đúng quy định của Điều lệ Đảng và các văn bản quy định, hướng dẫn hiện hành.</span>
+        </div>
+
+        <div class="article">
+            <span class="article-number">Điều 4.</span>
+            <span class="article-content">Quyết định này có hiệu lực từ ngày ký.</span>
+        </div>
+
+        <div class="closing-paragraph">
+            Văn phòng Đảng ủy Sở, <span id="ten-chi-bo-4">Chi bộ Văn phòng</span>, các đồng chí có tên tại Điều 1, Điều 2 và cơ quan, đơn vị có liên quan căn cứ Quyết định thực hiện.
+        </div>
+
+        <div class="footer">
+            <div class="footer-left">
+                <div><strong>Nơi nhận:</strong></div>
+                <div class="recipient-item">- Thường trực Đảng ủy UBND tỉnh (báo cáo),</div>
+                <div class="recipient-item">- BTC Đảng ủy UBND tỉnh (báo cáo),</div>
+                <div class="recipient-item">- Như Điều 4,</div>
+                <div class="recipient-item">- Các đồng chí Đảng ủy viên,</div>
+                <div class="recipient-item">- Lãnh đạo Sở,</div>
+                <div class="recipient-item">- Lưu ĐU.</div>
+            </div>
+            <div class="footer-right">
+                <div class="signature-title">T/M ĐẢNG ỦY</div>
+                <div class="signature-title">BÍ THƯ</div>
+                <div class="signature-name" id="nguoi-ky">Nguyễn Việt Hùng</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page break -->
+    <div class="page-break"></div>
+
+    <!-- Second page - Danh sách đảng viên -->
+    <div class="page">
+        <div class="table-title">
+            DANH SÁCH<br>
+            Đảng viên <span id="ten-chi-bo-table">Chi bộ Văn phòng</span> trực thuộc Đảng ủy Sở Xây dựng tỉnh Bắc Ninh
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">STT</th>
+                    <th style="width: 25%;">Họ và tên</th>
+                    <th style="width: 12%;">Năm sinh</th>
+                    <th style="width: 20%;">Chức vụ đảng</th>
+                    <th style="width: 25%;">Chức vụ chính quyền</th>
+                    <th style="width: 10%;">Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Table rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Constants for AppSheet connection
+        const appId = '0cb8b18f-8832-47f8-85ce-85d486abbda8';
+        const accessKey = 'V2-EjKXF-e5j4a-7oCiN-jf5we-CN1H1-wWqOV-yyFoU-tNKFW';
+        const region = 'www';
+
+        // Global data variables
+        let globalQuyetDinhData = null;
+        let globalChiTietData = null;
+
+        // Get ID from URL parameter
+        function getQuyetDinhIDFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('ID_QD');
+        }
+
+        // API call function
+        async function callAPI(tableName, selector) {
+            const response = await fetch(`https://${region}.appsheet.com/api/v2/apps/${appId}/tables/${tableName}/Action`, {
+                method: 'POST',
+                headers: {
+                    'ApplicationAccessKey': accessKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Action: 'Find',
+                    Properties: {
+                        Selector: selector
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return await response.json();
+        }
+
+        // Fetch data from AppSheet
+        async function fetchData() {
+            const idQuyetDinh = getQuyetDinhIDFromURL();
+            
+            if (!idQuyetDinh) {
+                hideLoadingMessage();
+                alert('Không tìm thấy ID_QD trong URL.');
+                return;
+            }
+
+            try {
+                const [quyetDinhData, chitietData] = await Promise.all([
+                    callAPI('QuyetdinhTrongDang', `Filter(QuyetdinhTrongDang, [ID_QD] = "${idQuyetDinh}")`),
+                    callAPI('QuyetDinhTrongDang_ChiTiet', `Filter(QuyetDinhTrongDang_ChiTiet, [Ref_QD_Dang] = "${idQuyetDinh}")`)
+                ]);
+
+                globalQuyetDinhData = quyetDinhData;
+                globalChiTietData = chitietData;
+
+                if (!quyetDinhData || quyetDinhData.length === 0) {
+                    hideLoadingMessage();
+                    alert('Không tìm thấy dữ liệu quyết định.');
+                    return;
+                }
+
+                if (!chitietData || chitietData.length === 0) {
+                    hideLoadingMessage();
+                    alert('Không tìm thấy dữ liệu chi tiết.');
+                    return;
+                }
+
+                populateQuyetDinhData(quyetDinhData[0]);
+                populateChiTietData(chitietData);
+                hideLoadingMessage();
+
+            } catch (error) {
+                console.error('Lỗi:', error);
+                hideLoadingMessage();
+                alert('Đã xảy ra lỗi khi lấy dữ liệu: ' + error.message);
+            }
+        }
+
+        // Populate QuyetdinhTrongDang data
+        function populateQuyetDinhData(data) {
+            if (data.TrichYeu) {
+                document.getElementById('trich-yeu').innerHTML = data.TrichYeu;
+            }
+
+            if (data.TenChiBo) {
+                document.getElementById('ten-chi-bo').textContent = data.TenChiBo;
+                document.getElementById('ten-chi-bo-2').textContent = data.TenChiBo;
+                document.getElementById('ten-chi-bo-3').textContent = data.TenChiBo;
+                document.getElementById('ten-chi-bo-4').textContent = data.TenChiBo;
+                document.getElementById('ten-chi-bo-table').textContent = data.TenChiBo;
+            }
+
+            if (data.CanCuBanHanhQuyetDinhKhac) {
+                document.getElementById('can-cu-khac').innerHTML = data.CanCuBanHanhQuyetDinhKhac + ';';
+            }
+
+            if (data.NhiemKy) {
+                document.getElementById('nhiem-ky').textContent = data.NhiemKy;
+            }
+
+            if (data.TenNguoiKy) {
+                document.getElementById('nguoi-ky').textContent = data.TenNguoiKy;
+            }
+        }
+
+        // Populate Chi Tiet data
+        function populateChiTietData(data) {
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = '';
+
+            const chiUyList = document.getElementById('danh-sach-chi-uy');
+            chiUyList.innerHTML = '';
+
+            data.forEach((item, index) => {
+                // Add to table
+                const row = document.createElement('tr');
+                const hoTen = (item.HoTenNhanSu || '').replace(/^(Ông|Bà)\s+/i, '');
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td class="text-left">${hoTen}</td>
+                    <td>${item.NgaySinhNhanSu || ''}</td>
+                    <td class="text-left">${item.TenChucVuDang || ''}</td>
+                    <td class="text-left">${item.TenChucVuChinhQuyen || ''} ${item.TenDonViCongTac || ''}</td>
+                    <td>${item.GhiChu || ''}</td>
+                `;
+                tableBody.appendChild(row);
+
+                // Add to chi uy list if applicable
+                if (item.TenChucVuDang && (
+                    item.TenChucVuDang.includes('Bí thư') ||
+                    item.TenChucVuDang.includes('Phó Bí thư') ||
+                    item.TenChucVuDang.includes('Chi ủy viên')
+                )) {
+                    const chiUyItem = document.createElement('div');
+                    chiUyItem.className = 'chi-uy-item';
+                    chiUyItem.innerHTML = `${index + 1}. Đồng chí ${hoTen}, ${item.TenChucVuDang} Chi bộ, ${item.TenChucVuChinhQuyen || ''}, ${item.TenDonViCongTac || ''};`;
+                    chiUyList.appendChild(chiUyItem);
+                }
+            });
+        }
+
+        // Hide loading message
+        function hideLoadingMessage() {
+            document.getElementById('loading-message').classList.add('hidden');
+        }
+
+        // Export to Word
+        async function exportToWordTemplate() {
+            try {
+                document.getElementById('loading-message').classList.remove('hidden');
+
+                if (!globalQuyetDinhData || !globalChiTietData) {
+                    alert('Dữ liệu chưa được tải.');
+                    document.getElementById('loading-message').classList.add('hidden');
+                    return;
+                }
+
+                const quyetDinh = globalQuyetDinhData[0];
+
+                // Prepare data for Word template
+                const dangVienList = globalChiTietData.map((item, index) => {
+                    const hoTen = (item.HoTenNhanSu || '').replace(/^(Ông|Bà)\s+/i, '');
+                    return {
+                        stt: (index + 1).toString(),
+                        ho_ten: hoTen,
+                        nam: item.NgaySinhNhanSu || '',
+                        chuc_vu_dang: item.TenChucVuDang || '',
+                        chuc_vu_chinh_quyen: item.TenChucVuChinhQuyen || '',
+                        don_vi_cong_tac: item.TenDonViCongTac || '',
+                        gc: item.GhiChu || ''
+                    };
+                });
+
+                const chiUyList = globalChiTietData
+                    .filter(item => item.TenChucVuDang && (
+                        item.TenChucVuDang.includes('Bí thư') ||
+                        item.TenChucVuDang.includes('Phó Bí thư') ||
+                        item.TenChucVuDang.includes('Chi ủy viên')
+                    ))
+                    .map((item, index) => {
+                        const hoTen = (item.HoTenNhanSu || '').replace(/^(Ông|Bà)\s+/i, '');
+                        return {
+                            stt: (index + 1).toString(),
+                            ho_ten: hoTen,
+                            chuc_vu_dang: item.TenChucVuDang || '',
+                            chuc_vu_chinh_quyen: item.TenChucVuChinhQuyen || '',
+                            don_vi_cong_tac: item.TenDonViCongTac || ''
+                        };
+                    });
+
+                // Load Word template
+                const response = await fetch('https://hoangmv.github.io/templates_qd/quyet_dinh_dang_template.docx');
+                if (!response.ok) {
+                    throw new Error('Không thể tải template Word');
+                }
+                const templateContent = await response.arrayBuffer();
+
+                const zip = new PizZip(templateContent);
+                const doc = new window.docxtemplater(zip, {
+                    paragraphLoop: true,
+                    linebreaks: true
+                });
+
+                // Set data for template
+                const data = {
+                    so_quyet_dinh: quyetDinh.SoQuyetDinh_Dang || '______',
+                    trich_yeu: quyetDinh.TrichYeu || '',
+                    ten_chi_bo: quyetDinh.TenChiBo || '',
+                    can_cu_khac: quyetDinh.CanCuBanHanhQuyetDinhKhac || '',
+                    nhiem_ky: quyetDinh.NhiemKy || '',
+                    nguoi_ky: quyetDinh.TenNguoiKy || '',
+                    dang_vien_list: dangVienList,
+                    chi_uy_list: chiUyList
+                };
+
+                doc.setData(data);
+                doc.render();
+
+                const blob = doc.getZip().generate({
+                    type: "blob",
+                    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                });
+
+                const fileName = `Quyet_dinh_thanh_lap_${quyetDinh.TenChiBo || 'Chi_bo'}.docx`;
+                saveAs(blob, fileName);
+
+            } catch (error) {
+                console.error('Lỗi khi xuất file Word:', error);
+                alert('Có lỗi khi xuất file Word: ' + error.message);
+            } finally {
+                document.getElementById('loading-message').classList.add('hidden');
+            }
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', fetchData);
+
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        }, false);
+
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+        };
+    </script>
+</body>
+
+</html>
